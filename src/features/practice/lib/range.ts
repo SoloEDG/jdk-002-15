@@ -1,4 +1,7 @@
 import type { PracticeConfig } from "../../../shared/session";
+import { SPEEDS } from "../../../shared/judgment";
+const MIN_SPEED = SPEEDS[0];
+const MAX_SPEED = SPEEDS[SPEEDS.length - 1];
 export function normalize(
   config: PracticeConfig,
   beats: number,
@@ -9,7 +12,7 @@ export function normalize(
   );
   return {
     enabled: config.enabled,
-    speed: Math.max(0.5, Math.min(1.25, config.speed)),
+    speed: Math.max(MIN_SPEED, Math.min(MAX_SPEED, config.speed)),
     start,
     end: Math.max(start + 4, Math.min(beats, Math.round(config.end / 4) * 4)),
   };

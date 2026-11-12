@@ -12,9 +12,16 @@ const props = defineProps<{
   done: Set<string>;
   held: Set<Lane>;
   feedback: string;
+  feedbackMs: number | null;
   combo: number;
 }>();
 defineEmits<{ down: [lane: Lane]; up: [lane: Lane] }>();
+const deltaText = computed(() => {
+  const ms = props.feedbackMs;
+  if (ms === null) return "";
+  if (ms === 0) return "0ms";
+  return ms > 0 ? `+${ms}ms 延后` : `${ms}ms 提前`;
+});
 const notes = computed(() =>
   visibleNotes(
     props.run?.notes ?? props.track.notes,
@@ -68,7 +75,12 @@ const notes = computed(() =>
       </div></template
     >
     <div v-if="phase === 'playing'" class="judgment-float">
-      <strong>{{ feedback }}</strong
+      <strong>{{ feedback }}</strong>
+      <small
+        v-if="deltaText"
+        class="judgment-delta"
+        :class="(feedbackMs ?? 0) < 0 ? 'early' : 'late'"
+        >{{ deltaText }}</small
       ><span v-if="combo > 1">{{ combo }}<small> COMBO</small></span>
     </div>
     <div class="hit-line"></div>

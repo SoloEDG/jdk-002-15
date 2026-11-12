@@ -1,6 +1,7 @@
 import type { Note, Track } from "./chart";
 export type Phase = "ready" | "playing" | "paused" | "finished";
 export type Grade = "PERFECT" | "GREAT" | "GOOD" | "MISS";
+/** delta 为真实毫秒误差（正=延后，负=提前），已扣除暂停时间，与速度无关 */
 export type Hit = { noteId: string; grade: Grade; delta: number; beat: number };
 export type Run = {
   id: string;

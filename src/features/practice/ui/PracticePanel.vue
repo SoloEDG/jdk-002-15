@@ -1,10 +1,26 @@
 <script setup lang="ts">
+import { computed } from "vue";
 import type { Track } from "../../../shared/chart";
 import type { PracticeConfig } from "../../../shared/session";
+import {
+  REAL_WINDOWS_MS,
+  SPEEDS,
+  windowsFor,
+} from "../../../shared/judgment";
 import { rangeLabel } from "../lib/range";
 import BeatTimeline from "./BeatTimeline.vue";
-defineProps<{ track: Track; config: PracticeConfig; locked: boolean }>();
+const props = defineProps<{
+  track: Track;
+  config: PracticeConfig;
+  locked: boolean;
+}>();
 defineEmits<{ update: [patch: Partial<PracticeConfig>] }>();
+const win = computed(() => windowsFor(props.config.speed));
+const chartMs = computed(() => ({
+  perfect: Math.round(win.value.perfect * 1000),
+  great: Math.round(win.value.great * 1000),
+  good: Math.round(win.value.good * 1000),
+}));
 </script>
 <template>
   <section class="practice panel">
@@ -32,7 +48,7 @@ defineEmits<{ update: [patch: Partial<PracticeConfig>] }>();
     </div>
     <div class="speed-buttons">
       <button
-        v-for="v in [0.5, 0.75, 1, 1.25]"
+        v-for="v in SPEEDS"
         :key="v"
         :disabled="locked || !config.enabled"
         :class="{ active: config.speed === v }"
@@ -40,6 +56,21 @@ defineEmits<{ update: [patch: Partial<PracticeConfig>] }>();
       >
         {{ v }}×
       </button>
+    </div>
+    <div class="window-hint">
+      <p class="window-hint-title">
+        判定按真实毫秒衡量 · 当前 {{ config.speed.toFixed(2) }}×
+      </p>
+      <p class="window-hint-line">
+        真实容差（各速度一致）：PERFECT ±{{ REAL_WINDOWS_MS.perfect }}ms ·
+        GREAT ±{{ REAL_WINDOWS_MS.great }}ms · GOOD ±{{ REAL_WINDOWS_MS.good
+        }}ms
+      </p>
+      <p class="window-hint-line muted">
+        等效谱面窗口：±{{ chartMs.perfect }} / ±{{ chartMs.great }} / ±{{
+          chartMs.good
+        }}ms，原速 1× 沿用原阈值
+      </p>
     </div>
     <BeatTimeline :track="track" :start="config.start" :end="config.end" />
     <div class="range-heading">

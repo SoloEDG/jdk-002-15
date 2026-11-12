@@ -420,6 +420,28 @@ main {
   border-color: #66764b;
   background: #2c3324;
 }
+.window-hint {
+  margin-top: 14px;
+  padding: 10px 12px;
+  border: 1px solid #34363f;
+  border-radius: 6px;
+  background: #1d1e25;
+}
+.window-hint-title {
+  font-size: 11px;
+  color: #d7ff9b;
+  letter-spacing: 0.4px;
+  margin-bottom: 6px;
+}
+.window-hint-line {
+  font-size: 10px;
+  color: #9ca0a9;
+  line-height: 1.6;
+  font-variant-numeric: tabular-nums;
+}
+.window-hint-line.muted {
+  color: #777d85;
+}
 .beat-timeline {
   display: flex;
   align-items: end;
@@ -681,6 +703,17 @@ main {
 .judgment-float small {
   font-size: 9px;
   letter-spacing: 1px;
+}
+.judgment-float .judgment-delta {
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  font-variant-numeric: tabular-nums;
+}
+.judgment-float .judgment-delta.early {
+  color: #9fc7ff;
+}
+.judgment-float .judgment-delta.late {
+  color: #ffd28a;
 }
 .progress {
   height: 3px;

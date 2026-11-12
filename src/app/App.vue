@@ -67,6 +67,7 @@ const { library: l, practice: p, judgment: j, records: r, performance: s } = w;
           :done="j.done.value"
           :held="j.held.value"
           :feedback="j.feedback.value"
+          :feedback-ms="j.feedbackMs.value"
           :combo="j.stats.value.combo"
           @down="w.down"
           @up="w.up"
